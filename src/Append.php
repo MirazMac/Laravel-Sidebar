@@ -5,6 +5,18 @@ namespace Maatwebsite\Sidebar;
 interface Append extends Authorizable, Routeable
 {
     /**
+     * @return string
+     */
+    public function getId();
+
+    /**
+     * @param string $id
+     *
+     * @return Append
+     */
+    public function id($id);
+
+    /**
      * @return null|string
      */
     public function getName();
@@ -22,7 +34,7 @@ interface Append extends Authorizable, Routeable
     public function getIcon();
 
     /**
-     * @param string $icon
+     * @param string|object $icon
      *
      * @return Append
      */
@@ -47,4 +59,11 @@ interface Append extends Authorizable, Routeable
      * @return Item
      */
     public function route($route, $params = []);
+
+    /**
+     * @return string
+     */
+    public function getRoute();
+
+
 }

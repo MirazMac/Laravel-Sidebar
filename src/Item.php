@@ -19,6 +19,18 @@ interface Item extends Itemable, Authorizable, Routeable
     public function name($name);
 
     /**
+     * @return mixed
+     */
+    public function getId();
+
+    /**
+     * @param mixed $id
+     *
+     * @return Item $item
+     */
+    public function id($id);
+
+    /**
      * @param int $weight
      *
      * @return Item
@@ -31,12 +43,12 @@ interface Item extends Itemable, Authorizable, Routeable
     public function getWeight();
 
     /**
-     * @return string
+     * @return string|object
      */
     public function getIcon();
 
     /**
-     * @param string $icon
+     * @param string|object $icon
      *
      * @return Item
      */
@@ -73,6 +85,11 @@ interface Item extends Itemable, Authorizable, Routeable
      * @return Item
      */
     public function route($route, $params = []);
+
+    /**
+     * @return string
+     */
+    public function getRoute();
 
     /**
      * @param callable|null|string $callbackOrValue

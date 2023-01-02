@@ -1,5 +1,5 @@
 {
-  "name": "maatwebsite/laravel-sidebar",
+  "name": "mirazmac/laravel-sidebar",
   "description": "A sidebar builder for Laravel",
   "license": "MIT",
   "keywords": [
@@ -34,9 +34,9 @@
   },
   "extra": {
     "laravel": {
-        "providers": [
-            "Maatwebsite\\Sidebar\\SidebarServiceProvider"
-        ]
+      "providers": [
+        "Maatwebsite\\Sidebar\\SidebarServiceProvider"
+      ]
     }
   },
   "config": {

@@ -20,12 +20,19 @@ class ActiveStateChecker
                 return true;
             }
         }
+        
+        $activeWhen = $item->getActiveWhen();
 
-        // Custom set active path
-        if ($path = $item->getActiveWhen()) {
+        if (is_string($activeWhen)) {
             return Request::is(
-                $path
+                $activeWhen
             );
+        } elseif (is_callable($activeWhen)) {
+            return $activeWhen();
+        }
+
+        if($route = $item->getRoute()) {
+            return request()->routeIs($route);
         }
 
         $path = ltrim(str_replace(url('/'), '', $item->getUrl()), '/');

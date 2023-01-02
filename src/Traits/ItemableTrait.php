@@ -16,18 +16,19 @@ trait ItemableTrait
     /**
      * Add a new Item (or edit an existing item) to the Group
      *
-     * @param string   $name
-     * @param callable $callback
+     * @param string        $id
+     * @param \Closure|null $callback
      *
      * @return Item
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    public function item($name, Closure $callback = null)
+    public function item($id, Closure $callback = null)
     {
-        if ($this->items->has($name)) {
-            $item = $this->items->get($name);
+        if ($this->items->has($id)) {
+            $item = $this->items->get($id);
         } else {
             $item = $this->container->make('Maatwebsite\Sidebar\Item');
-            $item->name($name);
+            $item->id($id);
         }
 
         $this->call($callback, $item);
@@ -46,7 +47,7 @@ trait ItemableTrait
      */
     public function addItem(Item $item)
     {
-        $this->items->put($item->getName(), $item);
+        $this->items->put($item->getId(), $item);
 
         return $this;
     }
@@ -67,6 +68,6 @@ trait ItemableTrait
      */
     public function hasItems()
     {
-        return count($this->items) > 0 ? true : false;
+        return count($this->items) > 0;
     }
 }

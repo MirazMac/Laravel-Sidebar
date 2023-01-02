@@ -10,12 +10,12 @@ interface Menu extends Authorizable
     /**
      * Init a new group or call an existing group and add it to the menu
      *
-     * @param          $name
-     * @param callable $callback
+     * @param               $id
+     * @param \Closure|null $callback
      *
      * @return Group
      */
-    public function group($name, Closure $callback = null);
+    public function group($id, Closure $callback = null);
 
     /**
      * Add a Group instance to the Menu

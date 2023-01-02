@@ -18,6 +18,19 @@ interface Group extends Itemable, Authorizable
      */
     public function name($name);
 
+
+    /**
+     * @return string
+     */
+    public function getId();
+
+    /**
+     * @param $id
+     *
+     * @return Group
+     */
+    public function id($id);
+
     /**
      * @param int $weight
      *

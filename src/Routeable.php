@@ -23,4 +23,9 @@ interface Routeable
      * @return $this
      */
     public function route($route, $params = []);
+
+    /**
+     * @return string
+     */
+    public function getRoute();
 }

@@ -19,24 +19,31 @@ class IlluminateItemRenderer
     protected $view = 'sidebar::item';
 
     /**
-     * @param Factory $factory
+     * @var bool
      */
-    public function __construct(Factory $factory)
+    protected $child = false;
+
+    /**
+     * @param Factory $factory
+     * @param bool    $child
+     */
+    public function __construct(Factory $factory, $child = false)
     {
         $this->factory = $factory;
+        $this->child = $child;
     }
 
     /**
      * @param Item $item
      *
-     * @return \Illuminate\Contracts\View\View
+     * @return string
      */
     public function render(Item $item)
     {
         if ($item->isAuthorized()) {
             $items = [];
             foreach ($item->getItems() as $child) {
-                $items[] = (new IlluminateItemRenderer($this->factory))->render($child);
+                $items[] = (new IlluminateItemRenderer($this->factory, true))->render($child);
             }
 
             $badges = [];
@@ -54,6 +61,7 @@ class IlluminateItemRenderer
                 'items'   => $items,
                 'badges'  => $badges,
                 'appends' => $appends,
+                'child' => $this->child,
                 'active'  => (new ActiveStateChecker())->isActive($item),
             ])->render();
         }

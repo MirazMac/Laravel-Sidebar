@@ -14,12 +14,20 @@ use Serializable;
 
 class DefaultGroup implements Group, Serializable
 {
-    use CallableTrait, CacheableTrait, ItemableTrait, AuthorizableTrait;
+    use AuthorizableTrait;
+    use CacheableTrait;
+    use CallableTrait;
+    use ItemableTrait;
 
     /**
      * @var string
      */
     protected $name;
+
+    /**
+     * @var string
+     */
+    protected $id;
 
     /**
      * @var int
@@ -42,6 +50,7 @@ class DefaultGroup implements Group, Serializable
      */
     protected $cacheables = [
         'name',
+        'id',
         'items',
         'weight',
         'heading'
@@ -117,6 +126,23 @@ class DefaultGroup implements Group, Serializable
      */
     public function shouldShowHeading()
     {
-        return $this->heading ? true : false;
+        return (bool)$this->heading;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function id($id)
+    {
+        $this->id = $id;
+        return $this;
     }
 }

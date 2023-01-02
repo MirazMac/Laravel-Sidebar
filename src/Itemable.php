@@ -9,12 +9,12 @@ interface Itemable
     /**
      * Add a new Item (or edit an existing item) to the Group
      *
-     * @param string   $name
-     * @param callable $callback
+     * @param string        $id
+     * @param \Closure|null $callback
      *
      * @return Item
      */
-    public function item($name, Closure $callback = null);
+    public function item($id, Closure $callback = null);
 
     /**
      * Add Item instance to Group

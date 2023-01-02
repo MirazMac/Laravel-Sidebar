@@ -12,7 +12,10 @@ use Serializable;
 
 class DefaultAppend implements Append, Serializable
 {
-    use CallableTrait, CacheableTrait, RouteableTrait, AuthorizableTrait;
+    use AuthorizableTrait;
+    use CacheableTrait;
+    use CallableTrait;
+    use RouteableTrait;
 
     /**
      * @var Container
@@ -27,7 +30,12 @@ class DefaultAppend implements Append, Serializable
     /**
      * @var string
      */
-    protected $icon = 'fa fa-plus';
+    protected $icon = '';
+
+    /**
+     * @var string
+     */
+    protected $id = '';
 
     /**
      * @var array
@@ -35,6 +43,7 @@ class DefaultAppend implements Append, Serializable
     protected $cacheables = [
         'name',
         'url',
+        'id',
         'icon'
     ];
 
@@ -83,6 +92,23 @@ class DefaultAppend implements Append, Serializable
     {
         $this->icon = $icon;
 
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function id($id)
+    {
+        $this->id = $id;
         return $this;
     }
 }

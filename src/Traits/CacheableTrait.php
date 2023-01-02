@@ -36,6 +36,16 @@ trait CacheableTrait
         }
     }
 
+    public function __serialize()
+    {
+        return $this->serialize();
+    }
+
+    public function __unserialize($serialized)
+    {
+        $this->unserialize($serialized);
+    }
+
     /**
      * @return array
      */

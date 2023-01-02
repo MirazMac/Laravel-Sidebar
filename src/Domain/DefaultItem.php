@@ -17,12 +17,21 @@ use Serializable;
 
 class DefaultItem implements Item, Serializable
 {
-    use CallableTrait, CacheableTrait, ItemableTrait, RouteableTrait, AuthorizableTrait;
+    use AuthorizableTrait;
+    use CacheableTrait;
+    use CallableTrait;
+    use ItemableTrait;
+    use RouteableTrait;
 
     /**
      * @var string
      */
     protected $name;
+
+    /**
+     * @var string
+     */
+    protected $id;
 
     /**
      * @var int
@@ -32,15 +41,15 @@ class DefaultItem implements Item, Serializable
     /**
      * @var string
      */
-    protected $icon = 'fa fa-angle-double-right';
+    protected $icon = '';
 
     /**
      * @var string
      */
-    protected $toggleIcon = 'fa fa-angle-left';
+    protected $toggleIcon = '';
 
     /**
-     * @var string|bool
+     * @var string|bool|callable
      */
     protected $activeWhen = false;
 
@@ -74,6 +83,7 @@ class DefaultItem implements Item, Serializable
      * @var array
      */
     protected $cacheables = [
+        'id',
         'name',
         'weight',
         'url',
@@ -141,7 +151,7 @@ class DefaultItem implements Item, Serializable
     }
 
     /**
-     * @return string
+     * @return string|object
      */
     public function getIcon()
     {
@@ -149,7 +159,7 @@ class DefaultItem implements Item, Serializable
     }
 
     /**
-     * @param string $icon
+     * @param string|object $icon
      *
      * @return Item
      */
@@ -276,12 +286,17 @@ class DefaultItem implements Item, Serializable
     }
 
     /**
-     * @param string $path
+     * @param string|callable $path
      *
      * @return $this
      */
     public function isActiveWhen($path)
     {
+        if (is_callable($path)) {
+            $this->activeWhen = $path;
+            return  $this;
+        }
+
         // Remove unwanted chars
         $path = ltrim($path, '/');
         $path = rtrim($path, '/');
@@ -293,7 +308,7 @@ class DefaultItem implements Item, Serializable
     }
 
     /**
-     * @return string
+     * @return bool|string|callable
      */
     public function getActiveWhen()
     {
@@ -338,5 +353,23 @@ class DefaultItem implements Item, Serializable
     public function getItemClass()
     {
         return $this->itemClass;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function id($id)
+    {
+        $this->id = $id;
+
+        return $this;
     }
 }

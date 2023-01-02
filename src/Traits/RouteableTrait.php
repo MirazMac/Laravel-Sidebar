@@ -10,6 +10,11 @@ trait RouteableTrait
     protected $url = '#';
 
     /**
+     * @var string
+     */
+    protected $route = '';
+
+    /**
      * @return string
      */
     public function getUrl()
@@ -37,10 +42,17 @@ trait RouteableTrait
      */
     public function route($route, $params = [])
     {
+        $this->route = $route;
+
         $this->url(
             $this->container->make('url')->route($route, $params)
         );
 
         return $this;
+    }
+
+    public function getRoute()
+    {
+        return $this->route;
     }
 }
