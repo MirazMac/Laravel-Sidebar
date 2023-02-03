@@ -13,11 +13,6 @@ class IlluminateBadgeRenderer
     protected $factory;
 
     /**
-     * @var string
-     */
-    protected $view = 'sidebar::badge';
-
-    /**
      * @param Factory $factory
      */
     public function __construct(Factory $factory)
@@ -27,15 +22,18 @@ class IlluminateBadgeRenderer
 
     /**
      * @param Badge $badge
+     * @param array $views
      *
-     * @return \Illuminate\Contracts\View\View
+     * @return string
      */
-    public function render(Badge $badge)
+    public function render(Badge $badge, array $views)
     {
         if ($badge->isAuthorized()) {
-            return $this->factory->make($this->view, [
+            return $this->factory->make($views['badge'], [
                 'badge' => $badge
             ])->render();
         }
+
+        return '';
     }
 }

@@ -27,21 +27,24 @@ class IlluminateGroupRenderer
 
     /**
      * @param Group $group
+     * @param array $views
      *
-     * @return \Illuminate\Contracts\View\View
+     * @return string
      */
-    public function render(Group $group)
+    public function render(Group $group, array $views)
     {
         if ($group->isAuthorized()) {
             $items = [];
             foreach ($group->getItems() as $item) {
-                $items[] = (new IlluminateItemRenderer($this->factory))->render($item);
+                $items[] = (new IlluminateItemRenderer($this->factory))->render($item, $views);
             }
 
-            return $this->factory->make($this->view, [
+            return $this->factory->make($views['group'], [
                 'group' => $group,
                 'items' => $items
             ])->render();
         }
+
+        return '';
     }
 }

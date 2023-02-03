@@ -20,7 +20,7 @@ class ActiveStateChecker
                 return true;
             }
         }
-        
+
         $activeWhen = $item->getActiveWhen();
 
         if (is_string($activeWhen)) {

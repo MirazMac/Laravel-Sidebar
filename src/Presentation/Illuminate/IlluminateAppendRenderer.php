@@ -13,11 +13,6 @@ class IlluminateAppendRenderer
     protected $factory;
 
     /**
-     * @var string
-     */
-    protected $view = 'sidebar::append';
-
-    /**
      * @param Factory $factory
      */
     public function __construct(Factory $factory)
@@ -27,15 +22,18 @@ class IlluminateAppendRenderer
 
     /**
      * @param Append $append
+     * @param array  $views
      *
-     * @return \Illuminate\Contracts\View\View
+     * @return string
      */
-    public function render(Append $append)
+    public function render(Append $append, array $views)
     {
         if ($append->isAuthorized()) {
-            return $this->factory->make($this->view, [
+            return $this->factory->make($views['append'], [
                 'append' => $append
             ])->render();
         }
+
+        return '';
     }
 }

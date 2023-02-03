@@ -14,22 +14,30 @@ class IlluminateSidebarRenderer implements SidebarRenderer
     protected $factory;
 
     /**
-     * @var string
+     * @var array|string[] Views for the sidebar
      */
-    protected $view = 'sidebar::menu';
+    protected $views = [
+        'menu'   => 'sidebar::menu',
+        'item'   => 'sidebar::item',
+        'badge'  => 'sidebar::badge',
+        'group'  => 'sidebar::group',
+        'append' => 'sidebar::append',
+    ];
 
     /**
      * @param Factory $factory
+     * @param array   $views
      */
-    public function __construct(Factory $factory)
+    public function __construct(Factory $factory, array $views = [])
     {
         $this->factory = $factory;
+        $this->views   = array_merge($this->views, $views);
     }
 
     /**
      * @param Sidebar $sidebar
      *
-     * @return \Illuminate\Contracts\View\View
+     * @return \Illuminate\Contracts\View\View|string
      */
     public function render(Sidebar $sidebar)
     {
@@ -38,12 +46,17 @@ class IlluminateSidebarRenderer implements SidebarRenderer
         if ($menu->isAuthorized()) {
             $groups = [];
             foreach ($menu->getGroups() as $group) {
-                $groups[] = (new IlluminateGroupRenderer($this->factory))->render($group);
+                $groups[] = (new IlluminateGroupRenderer($this->factory))->render(
+                    $group,
+                    $this->views
+                );
             }
 
-            return $this->factory->make($this->view, [
+            return $this->factory->make($this->views['menu'], [
                 'groups' => $groups
             ]);
         }
+
+        return '';
     }
 }
