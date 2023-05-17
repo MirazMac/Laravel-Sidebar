@@ -31,10 +31,12 @@ class ActiveStateChecker
             return $activeWhen();
         }
 
-        if($route = $item->getRoute()) {
+        if ($route = $item->getRoute()) {
+            /** @noinspection PhpUndefinedFunctionInspection */
             return request()->routeIs($route);
         }
 
+        /** @noinspection PhpUndefinedFunctionInspection */
         $path = ltrim(str_replace(url('/'), '', $item->getUrl()), '/');
 
         return Request::is(
