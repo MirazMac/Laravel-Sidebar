@@ -11,7 +11,7 @@ interface Menu extends Authorizable
      * Init a new group or call an existing group and add it to the menu
      *
      * @param               $id
-     * @param \Closure|null $callback
+     * @param Closure|null $callback
      *
      * @return Group
      */

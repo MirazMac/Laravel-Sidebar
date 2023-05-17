@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Sidebar\Domain;
 
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\Collection;
 use Maatwebsite\Sidebar\Append;
@@ -39,7 +40,7 @@ class DefaultItem implements Item, Serializable
     protected $weight = 0;
 
     /**
-     * @var string
+     * @var string|object
      */
     protected $icon = '';
 
@@ -101,9 +102,9 @@ class DefaultItem implements Item, Serializable
     public function __construct(Container $container)
     {
         $this->container = $container;
-        $this->items     = new Collection();
-        $this->badges    = new Collection();
-        $this->appends   = new Collection();
+        $this->items = new Collection();
+        $this->badges = new Collection();
+        $this->appends = new Collection();
     }
 
     /**
@@ -112,18 +113,6 @@ class DefaultItem implements Item, Serializable
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * @param mixed $name
-     *
-     * @return Item $item
-     */
-    public function name($name)
-    {
-        $this->name = $name;
-
-        return $this;
     }
 
     /**
@@ -159,18 +148,6 @@ class DefaultItem implements Item, Serializable
     }
 
     /**
-     * @param string|object $icon
-     *
-     * @return Item
-     */
-    public function icon($icon)
-    {
-        $this->icon = $icon;
-
-        return $this;
-    }
-
-    /**
      * @return string
      */
     public function getToggleIcon()
@@ -192,9 +169,10 @@ class DefaultItem implements Item, Serializable
 
     /**
      * @param callable|null|string $callbackOrValue
-     * @param string|null          $className
+     * @param string|null $className
      *
      * @return Badge
+     * @throws BindingResolutionException
      */
     public function badge($callbackOrValue = null, $className = null)
     {
@@ -236,11 +214,12 @@ class DefaultItem implements Item, Serializable
     }
 
     /**
-     * @param null        $callbackOrRoute
+     * @param null $callbackOrRoute
      * @param string|null $icon
-     * @param null        $name
+     * @param null $name
      *
      * @return Append
+     * @throws BindingResolutionException
      */
     public function append($callbackOrRoute = null, $icon = null, $name = null)
     {
@@ -263,6 +242,30 @@ class DefaultItem implements Item, Serializable
         $this->addAppend($append);
 
         return $append;
+    }
+
+    /**
+     * @param mixed $name
+     *
+     * @return Item $item
+     */
+    public function name($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @param string|object $icon
+     *
+     * @return Item
+     */
+    public function icon($icon)
+    {
+        $this->icon = $icon;
+
+        return $this;
     }
 
     /**
@@ -294,7 +297,7 @@ class DefaultItem implements Item, Serializable
     {
         if (is_callable($path)) {
             $this->activeWhen = $path;
-            return  $this;
+            return $this;
         }
 
         // Remove unwanted chars
@@ -316,6 +319,14 @@ class DefaultItem implements Item, Serializable
     }
 
     /**
+     * @return bool
+     */
+    public function getNewTab()
+    {
+        return $this->newTab;
+    }
+
+    /**
      * @param bool $newTab
      *
      * @return $this
@@ -328,11 +339,11 @@ class DefaultItem implements Item, Serializable
     }
 
     /**
-     * @return bool
+     * @return string
      */
-    public function getNewTab()
+    public function getItemClass()
     {
-        return $this->newTab;
+        return $this->itemClass;
     }
 
     /**
@@ -345,14 +356,6 @@ class DefaultItem implements Item, Serializable
         $this->itemClass = $itemClass;
 
         return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getItemClass()
-    {
-        return $this->itemClass;
     }
 
     /**

@@ -30,6 +30,22 @@ class SidebarServiceProvider extends ServiceProvider
     }
 
     /**
+     * Register views.
+     * @return void
+     */
+    protected function registerViews()
+    {
+        $location = __DIR__ . '/../resources/views';
+
+        $this->loadViewsFrom($location, $this->shortName);
+
+        /** @noinspection PhpUndefinedFunctionInspection */
+        $this->publishes([
+            $location => base_path('resources/views/vendor/' . $this->shortName),
+        ], 'views');
+    }
+
+    /**
      * Register the service provider.
      * @return void
      */
@@ -99,21 +115,6 @@ class SidebarServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register views.
-     * @return void
-     */
-    protected function registerViews()
-    {
-        $location = __DIR__ . '/../resources/views';
-
-        $this->loadViewsFrom($location, $this->shortName);
-
-        $this->publishes([
-            $location => base_path('resources/views/vendor/' . $this->shortName),
-        ], 'views');
-    }
-
-    /**
      * Register config
      * @return void
      */
@@ -125,6 +126,7 @@ class SidebarServiceProvider extends ServiceProvider
             $location, $this->shortName
         );
 
+        /** @noinspection PhpUndefinedFunctionInspection */
         $this->publishes([
             $location => config_path($this->shortName . '.php'),
         ], 'config');

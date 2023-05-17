@@ -3,6 +3,7 @@
 namespace Maatwebsite\Sidebar\Domain;
 
 use Closure;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\Collection;
 use Maatwebsite\Sidebar\Group;
@@ -14,7 +15,9 @@ use Serializable;
 
 class DefaultMenu implements Menu, Serializable
 {
-    use CallableTrait, CacheableTrait, AuthorizableTrait;
+    use AuthorizableTrait;
+    use CacheableTrait;
+    use CallableTrait;
 
     /**
      * @var Collection|Group[]
@@ -40,16 +43,17 @@ class DefaultMenu implements Menu, Serializable
     public function __construct(Container $container)
     {
         $this->container = $container;
-        $this->groups    = new Collection();
+        $this->groups = new Collection();
     }
 
     /**
      * Init a new group or call an existing group and add it to the menu
      *
-     * @param          $name
-     * @param callable $callback
+     * @param $id
+     * @param Closure|null $callback
      *
      * @return Group
+     * @throws BindingResolutionException
      */
     public function group($id, Closure $callback = null)
     {
@@ -82,17 +86,6 @@ class DefaultMenu implements Menu, Serializable
     }
 
     /**
-     * Get collection of Group instances sorted by their weight
-     * @return Collection|Group[]
-     */
-    public function getGroups()
-    {
-        return $this->groups->sortBy(function (Group $group) {
-            return $group->getWeight();
-        });
-    }
-
-    /**
      * Add another Menu instance and combined the two
      * Groups with the same name get combined, but
      * inherit each other's items
@@ -118,5 +111,16 @@ class DefaultMenu implements Menu, Serializable
         }
 
         return $this;
+    }
+
+    /**
+     * Get collection of Group instances sorted by their weight
+     * @return Collection|Group[]
+     */
+    public function getGroups()
+    {
+        return $this->groups->sortBy(function (Group $group) {
+            return $group->getWeight();
+        });
     }
 }

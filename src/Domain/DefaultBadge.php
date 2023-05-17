@@ -11,7 +11,9 @@ use Serializable;
 
 class DefaultBadge implements Badge, Serializable
 {
-    use CallableTrait, CacheableTrait, AuthorizableTrait;
+    use AuthorizableTrait;
+    use CacheableTrait;
+    use CallableTrait;
 
     /**
      * @var Container

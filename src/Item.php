@@ -93,7 +93,7 @@ interface Item extends Itemable, Authorizable, Routeable
 
     /**
      * @param callable|null|string $callbackOrValue
-     * @param string|null          $className
+     * @param string|null $className
      *                                              return Badge
      */
     public function badge($callbackOrValue = null, $className = null);
@@ -111,13 +111,13 @@ interface Item extends Itemable, Authorizable, Routeable
     public function getBadges();
 
     /**
-     * @param callable|string|null $callbackOrUrl
-     * @param string|null          $icon
-     * @param null                 $name
+     * @param callable|string|null $callbackOrRoute
+     * @param string|null $icon
+     * @param null $name
      *
      * @return Append
      */
-    public function append($callbackOrUrl = null, $icon = null, $name = null);
+    public function append($callbackOrRoute = null, $icon = null, $name = null);
 
     /**
      * @param Append $append
